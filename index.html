@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Bill Generator</title>
+
+        <!-- css file -->
+        <link rel="stylesheet" href="./style.css" />
+
+
+        <!-- bootsrap css cdn -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+        <!-- bootsrap js cdn -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+       
+        <!-- html2pdf cdn -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js" integrity="sha512-w3u9q/DeneCSwUDjhiMNibTRh/1i/gScBVp2imNVAMCt6cUHIw6xzhzcPFIaL3Q1EbI2l+nu17q2aLJJLo4ZYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    </head>
+    <body>
+        
+        <!-- taking data -->
+
+        <div class="container text-center col-lg-6">
+            <!-- heading -->
+            <h2 class="mb-4">Invoice Generator</h2> 
+
+            <div class="row">
+              <div class="col">
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="amount" placeholder="Enter the amount">
+                    <label for="amount"> Enter the Amount </label>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="gst" placeholder="Enter the GST">
+                    <label for="gst"> Enter the GST (%) </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="discount" placeholder="Enter the discount">
+                        <label for="discount"> Enter the Discount (%) </label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="quantity" placeholder="Enter the quantity">
+                        <label for="quantity">Enter the Quantity </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" placeholder="Enter description regarding the invoice" id="description" style="height: 100px"></textarea>
+                        <label for="description"> Enter the Description </label>
+                      </div>
+                </div>
+            </div>
+
+            <!-- genreate invoice button -->
+            <button type="button" class="btn btn-outline-primary" onclick="generateBill()"> Generate Invoice </button>
+
+        </div>
+        
+        <!-- printing invoice -->
+        
+        <div class="container text-center col-lg-6" id="bill">
+
+            <!-- heading -->
+            <h2 class="mb-4">Perfoma Invoice</h2> 
+
+            <!-- printing date & time -->
+            <p style="text-align:left"> Date:  <span id="datetime">  </span>  </p>
+
+            <!-- buyer & seller contact details -->
+            
+              <div class="bg-slate-100 px-14 py-6 text-sm">
+                <table class="w-full border-collapse border-spacing-0">
+                  <tbody>
+                    <tr>
+                      <td class="w-1/2 align-top">
+                        <div class="text-sm text-neutral-600">
+                          <p class="font-bold">Supplier Company INC</p>
+                          <p>Number: 123456789</p>
+                          <p>VAT: 123456789</p>
+                          <!-- Raghav Gupta -->
+                          <p> Udyog Vihar Phase V, Phase V, Udyog Vihar, Sector 19 </p>
+                          <p> Gurugram, Haryana 122016 </p>
+                          <p> India </p>
+                        </div>
+                      </td>
+                      <td class="w-1/2 align-top text-right">
+                        <div class="text-sm text-neutral-600">
+                          <p class="font-bold">Customer Company</p>
+                          <p>Number: 123456789</p>
+                          <p>VAT: 123456789</p>
+                          <p> SCO 76, Madhya Marg, Sector 8C, Sector 8 </p>
+                          <p> Chandigarh, 160002 </p>
+                          <p> India </p>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <br>
+
+            <!-- invoice -->
+
+            <table>
+                <thead>
+                    <tr>
+                    <th>Description</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>GST (%)</th>
+                    <th>Discount (%)</th>
+                    <th>Total </th>
+                    </tr>
+                </thead>
+                <tbody id="billItems"></tbody>
+            </table>
+
+
+            <!-- footer -->
+
+        
+                <footer class="fixed bottom-0 left-0 bg-slate-100 w-full text-neutral-600 text-center text-xs py-3">
+                  Supplier Company
+                  <span class="text-slate-300 px-2">|</span>
+                  supplier@company.com
+                  <span class="text-slate-300 px-2">|</span>
+                  +91-25698-78965
+                </footer>
+
+
+            <!-- print invoice button -->
+            <button type="button" class="btn btn-outline-primary" onclick="printInvoice()"> Print Invoice </button>
+
+        </div>
+
+    </body>
+    
+    <script src="./app.js"> </script>
+</html>
